@@ -4,13 +4,13 @@ A tiny, **blazing fast** utility for constructing `className` strings conditiona
 
 [![npm version](https://img.shields.io/npm/v/@lightsound/cn.svg)](https://www.npmjs.com/package/@lightsound/cn)
 [![CI](https://github.com/lightsound/cn/actions/workflows/ci.yml/badge.svg)](https://github.com/lightsound/cn/actions/workflows/ci.yml)
-[![gzip size](https://img.shields.io/badge/gzip-131B-brightgreen.svg)](https://bundlephobia.com/package/@lightsound/cn)
+[![gzip size](https://img.shields.io/badge/gzip-130B-brightgreen.svg)](https://bundlephobia.com/package/@lightsound/cn)
 [![license](https://img.shields.io/npm/l/@lightsound/cn.svg)](./LICENSE)
 
 ## Features
 
-- **Blazing Fast**: Up to 25% faster than `clsx/lite`
-- **Tiny**: ~131B gzipped (smaller than clsx/lite!)
+- **Blazing Fast**: Up to 20% faster than `clsx/lite`
+- **Tiny**: ~130B gzipped (smaller than clsx/lite!)
 - **TypeScript**: Full type support out of the box
 - **Simple API**: Strings only - no objects, no arrays, maximum performance
 - **Zero Dependencies**: No external dependencies
@@ -22,10 +22,10 @@ A tiny, **blazing fast** utility for constructing `className` strings conditiona
 <!-- BENCHMARK_START -->
 | Test Case | @lightsound/cn | clsx/lite | Improvement |
 | --------- | -------------- | --------- | ----------- |
-| 2 strings | 78.66 ns | 83.43 ns | **6% faster** |
-| 3 strings | 71.70 ns | 86.90 ns | **17% faster** |
-| 5 strings | 85.57 ns | 113.35 ns | **25% faster** |
-| 10 strings | 145.74 ns | 168.36 ns | **13% faster** |
+| 2 strings | 87.52 ns | 83.10 ns | **-5% faster** |
+| 3 strings | 72.72 ns | 88.78 ns | **18% faster** |
+| 5 strings | 84.73 ns | 106.26 ns | **20% faster** |
+| 10 strings | 148.95 ns | 172.02 ns | **13% faster** |
 <!-- BENCHMARK_END -->
 
 ## Installation
@@ -129,7 +129,7 @@ Combines class names into a single string. Only accepts strings - non-string val
 | Strings only    | ✅             | ✅        | ❌    |
 | Objects support | ❌             | ❌        | ✅    |
 | Arrays support  | ❌             | ❌        | ✅    |
-| Size (gzip)     | ~131B          | ~139B     | ~239B |
+| Size (gzip)     | ~130B          | ~139B     | ~239B |
 | Performance     | ⚡⚡⚡         | ⚡⚡      | ⚡    |
 
 If you only use string-based class composition (the most common pattern with Tailwind CSS), `@lightsound/cn` provides the best performance.
