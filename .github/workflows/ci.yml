@@ -54,8 +54,19 @@ jobs:
         run: |
           git config --local user.email "github-actions[bot]@users.noreply.github.com"
           git config --local user.name "github-actions[bot]"
-          git diff --quiet README.md || (git add README.md && git commit -m "docs: update benchmark results [skip ci]")
-          git push
+          if ! git diff --quiet README.md; then
+            git add README.md
+            git commit -m "docs: update benchmark results [skip ci]"
+            git push
+          fi
+
+      - name: Upload build artifacts
+        if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+        uses: actions/upload-artifact@v4
+        with:
+          name: dist
+          path: dist/
+          retention-days: 1
 
   release-please:
     needs: test
@@ -90,30 +101,19 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Setup Bun
-        uses: oven-sh/setup-bun@v2
-        with:
-          bun-version: latest
-
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
           node-version: "20"
           registry-url: "https://registry.npmjs.org"
 
-      - name: Cache dependencies
-        uses: actions/cache@v4
+      - name: Download build artifacts
+        uses: actions/download-artifact@v4
         with:
-          path: ~/.bun/install/cache
-          key: ${{ runner.os }}-bun-${{ hashFiles('bun.lock') }}
-          restore-keys: |
-            ${{ runner.os }}-bun-
+          name: dist
+          path: dist/
 
-      - name: Install dependencies
-        run: bun install --frozen-lockfile
-
-      - name: Build
-        run: bun run build
-
+      # NOTE: NODE_AUTH_TOKEN is not required.
+      # Authentication uses OIDC token (id-token: write) with npm provenance.
       - name: Publish to npm with provenance
         run: npm publish --access public --provenance
