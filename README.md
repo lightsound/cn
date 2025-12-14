@@ -9,7 +9,7 @@ A tiny, **blazing fast** utility for constructing `className` strings conditiona
 
 ## Features
 
-- **Blazing Fast**: Up to 20% faster than `clsx/lite`
+- **Blazing Fast**: Up to 16% faster than `clsx/lite`
 - **Tiny**: ~130B gzipped (smaller than clsx/lite!)
 - **TypeScript**: Full type support out of the box
 - **Simple API**: Strings only - no objects, no arrays, maximum performance
@@ -22,10 +22,10 @@ A tiny, **blazing fast** utility for constructing `className` strings conditiona
 <!-- BENCHMARK_START -->
 | Test Case | @lightsound/cn | clsx/lite | Improvement |
 | --------- | -------------- | --------- | ----------- |
-| 2 strings | 87.52 ns | 83.10 ns | **-5% faster** |
-| 3 strings | 72.72 ns | 88.78 ns | **18% faster** |
-| 5 strings | 84.73 ns | 106.26 ns | **20% faster** |
-| 10 strings | 148.95 ns | 172.02 ns | **13% faster** |
+| 2 strings | 97.78 ns | 76.04 ns | **-29% faster** |
+| 3 strings | 100.63 ns | 119.75 ns | **16% faster** |
+| 5 strings | 113.66 ns | 111.28 ns | **-2% faster** |
+| 10 strings | 140.68 ns | 164.42 ns | **14% faster** |
 <!-- BENCHMARK_END -->
 
 ## Installation
