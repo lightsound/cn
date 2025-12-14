@@ -9,23 +9,37 @@ A tiny, **blazing fast** utility for constructing `className` strings conditiona
 
 ## Features
 
-- **Blazing Fast**: Up to 21% faster than `clsx/lite`
+- **Blazing Fast**: Up to 31% faster than `clsx/lite`
 - **Tiny**: ~130B gzipped (smaller than clsx/lite!)
 - **TypeScript**: Full type support out of the box
 - **Simple API**: Strings only - no objects, no arrays, maximum performance
 - **Zero Dependencies**: No external dependencies
+
+## Why @lightsound/cn?
+
+| Feature         | @lightsound/cn | clsx/lite | clsx  |
+| --------------- | -------------- | --------- | ----- |
+| Strings only    | ✅             | ✅        | ❌    |
+| Objects support | ❌             | ❌        | ✅    |
+| Arrays support  | ❌             | ❌        | ✅    |
+| Size (gzip)     | ~130B          | ~139B     | ~239B |
+| Performance     | ⚡⚡⚡         | ⚡⚡      | ⚡    |
+
+If you only use string-based class composition (the most common pattern with Tailwind CSS), `@lightsound/cn` provides the best performance.
 
 ## Benchmarks
 
 > Benchmarks are run on every CI build. See the [latest CI run](https://github.com/lightsound/cn/actions/workflows/ci.yml) for up-to-date results.
 
 <!-- BENCHMARK_START -->
-| Test Case | @lightsound/cn | clsx/lite | Improvement |
-| --------- | -------------- | --------- | ----------- |
-| 2 strings | 83.27 ns | 76.58 ns | **-9% faster** |
-| 3 strings | 100.00 ns | 115.30 ns | **13% faster** |
-| 5 strings | 113.06 ns | 142.27 ns | **21% faster** |
-| 10 strings | 174.20 ns | 172.56 ns | **-1% faster** |
+
+| Test Case  | @lightsound/cn | clsx/lite | Improvement    |
+| ---------- | -------------- | --------- | -------------- |
+| 2 strings  | 22.08 ns       | 29.64 ns  | **26% faster** |
+| 3 strings  | 34.19 ns       | 41.25 ns  | **17% faster** |
+| 5 strings  | 42.50 ns       | 57.44 ns  | **26% faster** |
+| 10 strings | 65.68 ns       | 95.23 ns  | **31% faster** |
+
 <!-- BENCHMARK_END -->
 
 ## Installation
@@ -68,46 +82,6 @@ cn("foo", false, null, undefined, 0, "", "bar");
 // => 'foo bar'
 ```
 
-## Real-world Example (Tailwind CSS)
-
-```typescript
-import { cn } from "@lightsound/cn";
-
-interface ButtonProps {
-  variant?: "primary" | "secondary";
-  size?: "sm" | "md" | "lg";
-  disabled?: boolean;
-  className?: string;
-}
-
-function Button({
-  variant = "primary",
-  size = "md",
-  disabled,
-  className,
-}: ButtonProps) {
-  return (
-    <button
-      className={cn(
-        "inline-flex items-center justify-center rounded-md font-medium",
-        "transition-colors focus-visible:outline-none focus-visible:ring-2",
-        variant === "primary" && "bg-blue-500 text-white hover:bg-blue-600",
-        variant === "secondary" &&
-          "bg-gray-200 text-gray-900 hover:bg-gray-300",
-        size === "sm" && "h-8 px-3 text-sm",
-        size === "md" && "h-10 px-4 text-base",
-        size === "lg" && "h-12 px-6 text-lg",
-        disabled && "pointer-events-none opacity-50",
-        className
-      )}
-      disabled={disabled}
-    >
-      Click me
-    </button>
-  );
-}
-```
-
 ## API
 
 ### `cn(...classes)`
@@ -121,18 +95,6 @@ Combines class names into a single string. Only accepts strings - non-string val
 #### Returns
 
 - `string` - The combined class names separated by spaces
-
-## Why @lightsound/cn?
-
-| Feature         | @lightsound/cn | clsx/lite | clsx  |
-| --------------- | -------------- | --------- | ----- |
-| Strings only    | ✅             | ✅        | ❌    |
-| Objects support | ❌             | ❌        | ✅    |
-| Arrays support  | ❌             | ❌        | ✅    |
-| Size (gzip)     | ~130B          | ~139B     | ~239B |
-| Performance     | ⚡⚡⚡         | ⚡⚡      | ⚡    |
-
-If you only use string-based class composition (the most common pattern with Tailwind CSS), `@lightsound/cn` provides the best performance.
 
 ## Compatibility with clsx/lite
 

@@ -14,6 +14,14 @@ const CLSX_LITE_FILE = "node_modules/clsx/dist/lite.mjs";
 
 const BENCHMARK_ITERATIONS = 100000;
 const WARMUP_ITERATIONS = 10000;
+const BENCHMARK_RUNS = 10; // reduce noise; align with CI benchmark philosophy
+
+type BenchRow = {
+  name: string;
+  cnNs: number;
+  clsxNs: number;
+  improvement: number;
+};
 
 function measure(fn: () => void, iterations: number): number {
   const start = performance.now();
@@ -24,12 +32,13 @@ function measure(fn: () => void, iterations: number): number {
   return end - start;
 }
 
-function runBenchmarks(): {
-  name: string;
-  cnNs: number;
-  clsxNs: number;
-  improvement: number;
-}[] {
+function getArgValue(flag: string): string | undefined {
+  const idx = process.argv.indexOf(flag);
+  if (idx === -1) return undefined;
+  return process.argv[idx + 1];
+}
+
+function runBenchmarks(): BenchRow[] {
   // Warmup
   for (const scenario of scenarios) {
     for (let i = 0; i < WARMUP_ITERATIONS; i++) {
@@ -38,20 +47,23 @@ function runBenchmarks(): {
     }
   }
 
-  const results: {
-    name: string;
-    cnNs: number;
-    clsxNs: number;
-    improvement: number;
-  }[] = [];
+  const results: BenchRow[] = [];
 
   for (const scenario of scenarios) {
     const args = scenario.args as string[];
-    const cnTime = measure(() => cn(...args), BENCHMARK_ITERATIONS);
-    const clsxTime = measure(() => clsx(...args), BENCHMARK_ITERATIONS);
+    const cnTimes: number[] = [];
+    const clsxTimes: number[] = [];
 
-    const cnNs = (cnTime / BENCHMARK_ITERATIONS) * 1_000_000;
-    const clsxNs = (clsxTime / BENCHMARK_ITERATIONS) * 1_000_000;
+    for (let run = 0; run < BENCHMARK_RUNS; run++) {
+      cnTimes.push(measure(() => cn(...args), BENCHMARK_ITERATIONS));
+      clsxTimes.push(measure(() => clsx(...args), BENCHMARK_ITERATIONS));
+    }
+
+    const avgCnTime = cnTimes.reduce((s, v) => s + v, 0) / BENCHMARK_RUNS;
+    const avgClsxTime = clsxTimes.reduce((s, v) => s + v, 0) / BENCHMARK_RUNS;
+
+    const cnNs = (avgCnTime / BENCHMARK_ITERATIONS) * 1_000_000;
+    const clsxNs = (avgClsxTime / BENCHMARK_ITERATIONS) * 1_000_000;
     const improvement = Math.round((1 - cnNs / clsxNs) * 100);
 
     results.push({
@@ -63,6 +75,16 @@ function runBenchmarks(): {
   }
 
   return results;
+}
+
+function readBenchJson(path: string): BenchRow[] {
+  const parsed = JSON.parse(readFileSync(path, "utf-8")) as {
+    scenarios?: BenchRow[];
+  };
+  if (!parsed.scenarios || !Array.isArray(parsed.scenarios)) {
+    throw new Error(`Invalid bench JSON: missing "scenarios" array in ${path}`);
+  }
+  return parsed.scenarios;
 }
 
 function getBundleSizes(): {
@@ -82,19 +104,23 @@ function getBundleSizes(): {
   };
 }
 
-function generateBenchmarkTable(
-  results: { name: string; cnNs: number; clsxNs: number; improvement: number }[]
-): string {
+function generateBenchmarkTable(results: BenchRow[]): string {
   const lines = [
     "| Test Case | @lightsound/cn | clsx/lite | Improvement |",
     "| --------- | -------------- | --------- | ----------- |",
   ];
 
   for (const r of results) {
+    const label =
+      r.improvement > 0
+        ? `**${r.improvement}% faster**`
+        : r.improvement < 0
+        ? `**${Math.abs(r.improvement)}% slower**`
+        : `**0% (tie)**`;
     lines.push(
-      `| ${r.name} | ${r.cnNs.toFixed(2)} ns | ${r.clsxNs.toFixed(2)} ns | **${
-        r.improvement
-      }% faster** |`
+      `| ${r.name} | ${r.cnNs.toFixed(2)} ns | ${r.clsxNs.toFixed(
+        2
+      )} ns | ${label} |`
     );
   }
 
@@ -102,7 +128,12 @@ function generateBenchmarkTable(
 }
 
 function updateReadme() {
-  console.log("📊 Running benchmarks...\n");
+  const benchJsonPath = getArgValue("--bench");
+  if (benchJsonPath && existsSync(benchJsonPath)) {
+    console.log(`📊 Loading benchmark results from ${benchJsonPath}...\n`);
+  } else {
+    console.log("📊 Running benchmarks...\n");
+  }
 
   if (!existsSync(CN_DIST_FILE)) {
     console.error(
@@ -111,12 +142,21 @@ function updateReadme() {
     process.exit(1);
   }
 
-  const benchResults = runBenchmarks();
+  const benchResults =
+    benchJsonPath && existsSync(benchJsonPath)
+      ? readBenchJson(benchJsonPath)
+      : runBenchmarks();
   const sizes = getBundleSizes();
 
   console.log("Benchmark results:");
   for (const r of benchResults) {
-    console.log(`  ${r.name}: ${r.improvement}% faster`);
+    const label =
+      r.improvement > 0
+        ? `${r.improvement}% faster`
+        : r.improvement < 0
+        ? `${Math.abs(r.improvement)}% slower`
+        : "0% (tie)";
+    console.log(`  ${r.name}: ${label}`);
   }
   console.log(`\nBundle sizes:`);
   console.log(`  cn: ${sizes.cnGzip}B gzip`);
@@ -138,7 +178,7 @@ function updateReadme() {
   }
 
   // Update size badges and mentions
-  const maxImprovement = Math.max(...benchResults.map((r) => r.improvement));
+  const maxImprovement = Math.max(0, ...benchResults.map((r) => r.improvement));
 
   // Update "Up to X% faster" in Features
   readme = readme.replace(

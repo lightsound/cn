@@ -11,6 +11,8 @@
 import { cn } from "../src/index";
 import { clsx } from "clsx/lite";
 import { scenarios } from "./scenarios";
+import { mkdirSync, writeFileSync } from "node:fs";
+import { dirname } from "node:path";
 
 const WARMUP_ITERATIONS = 10000;
 const BENCHMARK_ITERATIONS = 100000;
@@ -23,6 +25,12 @@ function measure(fn: () => void, iterations: number): number {
   }
   const end = performance.now();
   return end - start;
+}
+
+function getArgValue(flag: string): string | undefined {
+  const idx = process.argv.indexOf(flag);
+  if (idx === -1) return undefined;
+  return process.argv[idx + 1];
 }
 
 async function runBenchmark() {
@@ -47,6 +55,9 @@ async function runBenchmark() {
     avgCnTime: number;
     avgClsxTime: number;
     avgRatio: number;
+    cnNs: number;
+    clsxNs: number;
+    improvement: number;
     passed: boolean;
     runs: { cnTime: number; clsxTime: number; ratio: number }[];
   }[] = [];
@@ -62,9 +73,14 @@ async function runBenchmark() {
       runs.push({ cnTime, clsxTime, ratio });
     }
 
-    const avgCnTime = runs.reduce((sum, r) => sum + r.cnTime, 0) / BENCHMARK_RUNS;
-    const avgClsxTime = runs.reduce((sum, r) => sum + r.clsxTime, 0) / BENCHMARK_RUNS;
+    const avgCnTime =
+      runs.reduce((sum, r) => sum + r.cnTime, 0) / BENCHMARK_RUNS;
+    const avgClsxTime =
+      runs.reduce((sum, r) => sum + r.clsxTime, 0) / BENCHMARK_RUNS;
     const avgRatio = avgCnTime / avgClsxTime;
+    const cnNs = (avgCnTime / BENCHMARK_ITERATIONS) * 1_000_000;
+    const clsxNs = (avgClsxTime / BENCHMARK_ITERATIONS) * 1_000_000;
+    const improvement = Math.round((1 - cnNs / clsxNs) * 100);
     // cn must be faster on average (ratio < 1.0)
     const passed = avgRatio < 1.0;
 
@@ -73,13 +89,16 @@ async function runBenchmark() {
       avgCnTime,
       avgClsxTime,
       avgRatio,
+      cnNs,
+      clsxNs,
+      improvement,
       passed,
       runs,
     });
   }
 
   // Print results
-  console.log("📊 Results (average of 5 runs):\n");
+  console.log(`📊 Results (average of ${BENCHMARK_RUNS} runs):\n`);
   console.log(
     `${"Scenario".padEnd(25)} | ${"cn (ms)".padStart(
       10
@@ -104,6 +123,38 @@ async function runBenchmark() {
   // Check if ALL scenarios passed (cn must be faster in EVERY scenario)
   const failedScenarios = results.filter((r) => !r.passed);
   const allPassed = failedScenarios.length === 0;
+
+  const outputPath = getArgValue("--output");
+  if (outputPath) {
+    mkdirSync(dirname(outputPath), { recursive: true });
+    writeFileSync(
+      outputPath,
+      JSON.stringify(
+        {
+          meta: {
+            iterations: BENCHMARK_ITERATIONS,
+            warmupIterations: WARMUP_ITERATIONS,
+            runs: BENCHMARK_RUNS,
+            timestamp: new Date().toISOString(),
+            platform: process.platform,
+            arch: process.arch,
+          },
+          scenarios: results.map((r) => ({
+            name: r.name,
+            cnNs: r.cnNs,
+            clsxNs: r.clsxNs,
+            improvement: r.improvement,
+            avgRatio: r.avgRatio,
+            avgCnTimeMs: r.avgCnTime,
+            avgClsxTimeMs: r.avgClsxTime,
+          })),
+        },
+        null,
+        2
+      )
+    );
+    console.log(`\n📝 Wrote benchmark JSON to ${outputPath}`);
+  }
 
   if (allPassed) {
     // Calculate overall speedup for display

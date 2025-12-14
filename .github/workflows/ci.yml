@@ -43,11 +43,11 @@ jobs:
         run: bun run check-size
 
       - name: Run benchmark (must be faster than clsx/lite)
-        run: bun run bench:ci
+        run: bun run bench:ci --output .bench/ci-bench.json
 
       - name: Update README with benchmark results
         if: github.ref == 'refs/heads/main' && github.event_name == 'push'
-        run: bun run update-readme
+        run: bun run update-readme --bench .bench/ci-bench.json
 
       - name: Commit README updates
         if: github.ref == 'refs/heads/main' && github.event_name == 'push'
