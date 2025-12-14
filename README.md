@@ -9,7 +9,7 @@ A tiny, **blazing fast** utility for constructing `className` strings conditiona
 
 ## Features
 
-- **Blazing Fast**: Up to 29% faster than `clsx/lite`
+- **Blazing Fast**: Up to 28% faster than `clsx/lite`
 - **Tiny**: ~130B gzipped (smaller than clsx/lite!)
 - **TypeScript**: Full type support out of the box
 - **Simple API**: Strings only - no objects, no arrays, maximum performance
@@ -32,14 +32,12 @@ If you only use string-based class composition (the most common pattern with Tai
 > Benchmarks are run on every CI build. See the [latest CI run](https://github.com/lightsound/cn/actions/workflows/ci.yml) for up-to-date results.
 
 <!-- BENCHMARK_START -->
-
-| Test Case  | @lightsound/cn | clsx/lite | Improvement    |
-| ---------- | -------------- | --------- | -------------- |
-| 2 strings  | 46.71 ns       | 65.87 ns  | **29% faster** |
-| 3 strings  | 55.28 ns       | 74.02 ns  | **25% faster** |
-| 5 strings  | 70.82 ns       | 95.30 ns  | **26% faster** |
-| 10 strings | 119.66 ns      | 166.25 ns | **28% faster** |
-
+| Test Case | @lightsound/cn | clsx/lite | Improvement |
+| --------- | -------------- | --------- | ----------- |
+| 2 strings | 36.53 ns | 48.57 ns | **25% faster** |
+| 3 strings | 50.79 ns | 70.63 ns | **28% faster** |
+| 5 strings | 68.34 ns | 90.87 ns | **25% faster** |
+| 10 strings | 105.81 ns | 143.69 ns | **26% faster** |
 <!-- BENCHMARK_END -->
 
 ## Installation
