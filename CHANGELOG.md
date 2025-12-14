@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.1.0](https://github.com/lightsound/cn/compare/v1.0.3...v1.1.0) (2025-12-14)
+
+
+### Features
+
+* share benchmark results between CI and README update ([d2d121f](https://github.com/lightsound/cn/commit/d2d121fc752c6bc2af6e40be230124b0afc763a2))
+
 ## [1.0.3](https://github.com/lightsound/cn/compare/v1.0.2...v1.0.3) (2025-12-14)
 
 
