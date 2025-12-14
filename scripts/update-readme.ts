@@ -6,6 +6,7 @@ import { readFileSync, writeFileSync, existsSync } from "node:fs";
 import { gzipSync } from "node:zlib";
 import { cn } from "../src/index";
 import { clsx } from "clsx/lite";
+import { scenarios } from "../bench/scenarios";
 
 const README_PATH = "README.md";
 const CN_DIST_FILE = "dist/index.js";
@@ -13,37 +14,6 @@ const CLSX_LITE_FILE = "node_modules/clsx/dist/lite.mjs";
 
 const BENCHMARK_ITERATIONS = 100000;
 const WARMUP_ITERATIONS = 10000;
-
-// Test scenarios
-const scenarios = [
-  { name: "2 strings", args: ["foo", "bar"] },
-  { name: "3 strings", args: ["foo", "bar", "baz"] },
-  {
-    name: "5 strings",
-    args: [
-      "text-base",
-      "font-medium",
-      "text-gray-900",
-      "hover:text-blue-500",
-      "transition-colors",
-    ],
-  },
-  {
-    name: "10 strings",
-    args: [
-      "flex",
-      "items-center",
-      "justify-between",
-      "p-4",
-      "bg-white",
-      "rounded-lg",
-      "shadow-md",
-      "hover:shadow-lg",
-      "transition-all",
-      "duration-200",
-    ],
-  },
-];
 
 function measure(fn: () => void, iterations: number): number {
   const start = performance.now();
