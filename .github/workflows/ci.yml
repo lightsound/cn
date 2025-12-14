@@ -102,7 +102,10 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: "20"
-          registry-url: "https://registry.npmjs.org"
+
+      # Trusted Publishing (OIDC) requires a newer npm than what comes with Node 20.x on runners.
+      - name: Upgrade npm (for Trusted Publishing)
+        run: npm i -g npm@^11.5.1
 
       - name: Install dependencies
         run: bun install --frozen-lockfile
