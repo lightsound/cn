@@ -1,6 +1,6 @@
 {
   "name": "@lightsound/cn",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "A tiny, blazing fast utility for constructing className strings conditionally",
   "type": "module",
   "main": "./dist/index.js",

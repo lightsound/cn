@@ -1,5 +1,17 @@
 # Changelog
 
+## [1.0.3](https://github.com/lightsound/cn/compare/v1.0.2...v1.0.3) (2025-12-14)
+
+
+### Bug Fixes
+
+* **ci:** upgrade npm for Trusted Publishing support ([1f128ec](https://github.com/lightsound/cn/commit/1f128ecf406bc75ab366e9f88d5753c09d4d56f9))
+
+
+### Performance Improvements
+
+* increase benchmark runs to 10 for more stable results ([0295e2e](https://github.com/lightsound/cn/commit/0295e2e54b782b0b51de4e4a46ae8aba246bc141))
+
 ## [1.0.2](https://github.com/lightsound/cn/compare/v1.0.1...v1.0.2) (2025-12-14)
 
 
