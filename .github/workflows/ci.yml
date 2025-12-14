@@ -8,10 +8,13 @@ on:
 
 jobs:
   test:
+    # Skip if triggered by github-actions[bot] or commit message contains [skip ci]
+    if: >-
+      github.actor != 'github-actions[bot]' &&
+      (github.event_name != 'push' || !contains(github.event.head_commit.message, '[skip ci]'))
     runs-on: ubuntu-latest
-
     permissions:
-      contents: write
+      contents: read
 
     steps:
       - name: Checkout
@@ -45,12 +48,59 @@ jobs:
       - name: Run benchmark (must be faster than clsx/lite)
         run: bun run bench:ci --output .bench/ci-bench.json
 
-      - name: Update README with benchmark results
+      - name: Upload benchmark results
         if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+        uses: actions/upload-artifact@v4
+        with:
+          name: ci-bench
+          path: .bench/ci-bench.json
+          retention-days: 1
+
+  update-readme:
+    needs: test
+    # Only on main push, skip if triggered by github-actions[bot] or [skip ci]
+    if: >-
+      github.ref == 'refs/heads/main' &&
+      github.event_name == 'push' &&
+      github.actor != 'github-actions[bot]' &&
+      !contains(github.event.head_commit.message, '[skip ci]')
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Bun
+        uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: latest
+
+      - name: Cache dependencies
+        uses: actions/cache@v4
+        with:
+          path: ~/.bun/install/cache
+          key: ${{ runner.os }}-bun-${{ hashFiles('bun.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-bun-
+
+      - name: Install dependencies
+        run: bun install --frozen-lockfile
+
+      - name: Build
+        run: bun run build
+
+      - name: Download benchmark results
+        uses: actions/download-artifact@v4
+        with:
+          name: ci-bench
+          path: .bench
+
+      - name: Update README with benchmark results
         run: bun run update-readme --bench .bench/ci-bench.json
 
       - name: Commit README updates
-        if: github.ref == 'refs/heads/main' && github.event_name == 'push'
         run: |
           git config --local user.email "github-actions[bot]@users.noreply.github.com"
           git config --local user.name "github-actions[bot]"

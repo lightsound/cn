@@ -22,7 +22,7 @@ A tiny, **blazing fast** utility for constructing `className` strings conditiona
 | Strings only    | ✅             | ✅        | ❌    |
 | Objects support | ❌             | ❌        | ✅    |
 | Arrays support  | ❌             | ❌        | ✅    |
-| Size (gzip)     | ~130B          | ~139B     | ~239B |
+| Size (gzip)     | ~130B          | ~141B     | ~239B |
 | Performance     | ⚡⚡⚡         | ⚡⚡      | ⚡    |
 
 If you only use string-based class composition (the most common pattern with Tailwind CSS), `@lightsound/cn` provides the best performance.

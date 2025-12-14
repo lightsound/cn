@@ -4,13 +4,16 @@
 
 import { readFileSync, writeFileSync, existsSync } from "node:fs";
 import { gzipSync } from "node:zlib";
+import { createRequire } from "node:module";
 import { cn } from "../src/index";
 import { clsx } from "clsx/lite";
 import { scenarios } from "../bench/scenarios";
 
+const require = createRequire(import.meta.url);
+
 const README_PATH = "README.md";
 const CN_DIST_FILE = "dist/index.js";
-const CLSX_LITE_FILE = "node_modules/clsx/dist/lite.mjs";
+const CLSX_LITE_FILE = require.resolve("clsx/lite");
 
 const BENCHMARK_ITERATIONS = 100000;
 const WARMUP_ITERATIONS = 10000;

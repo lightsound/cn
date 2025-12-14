@@ -5,12 +5,14 @@
  * cn must be strictly better than clsx/lite in bundle size.
  */
 
-import { existsSync } from "node:fs";
+import { existsSync, readFileSync } from "node:fs";
 import { gzipSync } from "node:zlib";
-import { readFileSync } from "node:fs";
+import { createRequire } from "node:module";
+
+const require = createRequire(import.meta.url);
 
 const CN_DIST_FILE = "dist/index.js";
-const CLSX_LITE_FILE = "node_modules/clsx/dist/lite.mjs";
+const CLSX_LITE_FILE = require.resolve("clsx/lite");
 
 function checkSize() {
   console.log("📦 Bundle Size Check: cn vs clsx/lite\n");

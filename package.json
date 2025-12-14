@@ -26,7 +26,6 @@
     "bench:ci": "bun run bench/ci.ts",
     "check-size": "bun run scripts/check-size.ts",
     "update-readme": "bun run scripts/update-readme.ts",
-    "prepublishOnly": "bun run build && bun run test",
     "prepare": "husky"
   },
   "keywords": [
