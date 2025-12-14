@@ -22,10 +22,10 @@ A tiny, **blazing fast** utility for constructing `className` strings conditiona
 <!-- BENCHMARK_START -->
 | Test Case | @lightsound/cn | clsx/lite | Improvement |
 | --------- | -------------- | --------- | ----------- |
-| 2 strings | 87.53 ns | 92.73 ns | **6% faster** |
-| 3 strings | 79.17 ns | 87.48 ns | **10% faster** |
-| 5 strings | 83.33 ns | 106.40 ns | **22% faster** |
-| 10 strings | 144.19 ns | 166.58 ns | **13% faster** |
+| 2 strings | 86.79 ns | 89.09 ns | **3% faster** |
+| 3 strings | 75.77 ns | 83.82 ns | **10% faster** |
+| 5 strings | 79.19 ns | 101.41 ns | **22% faster** |
+| 10 strings | 141.82 ns | 176.82 ns | **20% faster** |
 <!-- BENCHMARK_END -->
 
 ## Installation
