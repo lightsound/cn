@@ -12,10 +12,11 @@ export function cn(
 ): string;
 export function cn(...args: ClassValue[]): string;
 export function cn() {
-  let s = "",
-    a,
-    l = arguments.length;
-  for (let i = 0; i < l; i++) if ((a = arguments[i])) s = s ? s + " " + a : a;
+  var i = 0,
+    l = arguments.length,
+    s = "",
+    a;
+  for (; i < l; i++) if ((a = arguments[i])) s = s ? s + " " + a : a;
   return s;
 }
 
