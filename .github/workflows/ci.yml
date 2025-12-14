@@ -115,5 +115,6 @@ jobs:
 
       # NOTE: NODE_AUTH_TOKEN is not required.
       # Authentication uses OIDC token (id-token: write) with npm provenance.
+      # --ignore-scripts skips prepublishOnly since build/test already done in test job.
       - name: Publish to npm with provenance
-        run: npm publish --access public --provenance
+        run: npm publish --access public --provenance --ignore-scripts
