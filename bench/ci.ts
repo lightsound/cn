@@ -14,7 +14,7 @@ import { scenarios } from "./scenarios";
 
 const WARMUP_ITERATIONS = 10000;
 const BENCHMARK_ITERATIONS = 100000;
-const BENCHMARK_RUNS = 5; // Run each scenario multiple times
+const BENCHMARK_RUNS = 10; // Run each scenario multiple times
 
 function measure(fn: () => void, iterations: number): number {
   const start = performance.now();
