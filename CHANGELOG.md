@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.0.1](https://github.com/lightsound/cn/compare/v1.0.0...v1.0.1) (2025-12-14)
+
+
+### Bug Fixes
+
+* **ci:** skip prepublishOnly in publish job ([a629dae](https://github.com/lightsound/cn/commit/a629dae54fae2008a9392da0ca8b543467bba846))
+
 ## 1.0.0 (2025-12-14)
 
 
