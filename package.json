@@ -1,0 +1,61 @@
+{
+  "name": "@lightsound/cn",
+  "version": "0.1.0",
+  "description": "A tiny, blazing fast utility for constructing className strings conditionally",
+  "type": "module",
+  "main": "./dist/index.js",
+  "module": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "default": "./dist/index.js"
+    }
+  },
+  "files": [
+    "dist"
+  ],
+  "sideEffects": false,
+  "scripts": {
+    "build": "bun run build:js && bun run build:types",
+    "build:js": "bun build src/index.ts --outdir dist --minify --target browser",
+    "build:types": "tsgo -p tsconfig.build.json",
+    "test": "bun test",
+    "test:watch": "bun test --watch",
+    "bench": "bun run bench/index.ts",
+    "bench:ci": "bun run bench/ci.ts",
+    "check-size": "bun run scripts/check-size.ts",
+    "update-readme": "bun run scripts/update-readme.ts",
+    "prepublishOnly": "bun run build && bun run test",
+    "prepare": "husky"
+  },
+  "keywords": [
+    "classnames",
+    "classes",
+    "classname",
+    "class",
+    "cn",
+    "clsx",
+    "tailwind",
+    "css"
+  ],
+  "author": "lightsound",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/lightsound/cn.git"
+  },
+  "bugs": {
+    "url": "https://github.com/lightsound/cn/issues"
+  },
+  "homepage": "https://github.com/lightsound/cn#readme",
+  "devDependencies": {
+    "@commitlint/cli": "^20.2.0",
+    "@commitlint/config-conventional": "^20.2.0",
+    "@types/bun": "^1.3.4",
+    "@typescript/native-preview": "^7.0.0-dev.20251213.1",
+    "clsx": "*",
+    "husky": "^9.1.7",
+    "mitata": "^1.0.34"
+  }
+}
