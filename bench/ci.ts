@@ -3,54 +3,12 @@
  *
  * Compares @lightsound/cn against clsx/lite and fails if cn is not faster.
  * cn must be strictly better than clsx/lite in performance.
+ * cn must be faster in ALL scenarios, not just overall.
  */
 
 import { cn } from "../src/index";
 import { clsx } from "clsx/lite";
-
-// Test scenarios
-const scenarios = [
-  {
-    name: "Single string",
-    args: ["foo"] as const,
-  },
-  {
-    name: "Multiple strings (3)",
-    args: ["foo", "bar", "baz"] as const,
-  },
-  {
-    name: "Multiple strings (5)",
-    args: [
-      "text-base",
-      "font-medium",
-      "text-gray-900",
-      "hover:text-blue-500",
-      "transition-colors",
-    ] as const,
-  },
-  {
-    name: "With falsy values",
-    args: ["base", false, "active", null, "primary"] as const,
-  },
-  {
-    name: "Conditional pattern",
-    args: [
-      "btn",
-      true && "btn-active",
-      false && "btn-disabled",
-      "primary" === "primary" && "btn-primary",
-    ] as const,
-  },
-  {
-    name: "Real-world Tailwind",
-    args: [
-      "inline-flex items-center justify-center rounded-md text-sm font-medium",
-      "ring-offset-background transition-colors",
-      false && "pointer-events-none opacity-50",
-      true && "bg-primary text-primary-foreground hover:bg-primary/90",
-    ] as const,
-  },
-] as const;
+import { scenarios } from "./scenarios";
 
 const WARMUP_ITERATIONS = 10000;
 const BENCHMARK_ITERATIONS = 100000;
@@ -129,26 +87,31 @@ async function runBenchmark() {
 
   console.log("\n" + "=".repeat(60));
 
-  // Calculate overall average
-  const totalCn = results.reduce((sum, r) => sum + r.cnTime, 0);
-  const totalClsx = results.reduce((sum, r) => sum + r.clsxTime, 0);
-  const overallRatio = totalCn / totalClsx;
+  // Check if ALL scenarios passed (cn must be faster in EVERY scenario)
+  const failedScenarios = results.filter((r) => !r.passed);
+  const allPassed = failedScenarios.length === 0;
 
-  console.log(
-    `\n📈 Overall: cn is ${overallRatio.toFixed(2)}x ${
-      overallRatio >= 1 ? "slower than or equal to" : "faster than"
-    } clsx/lite`
-  );
-
-  // cn must be strictly faster overall (ratio < 1.0)
-  const overallPassed = overallRatio < 1.0;
-
-  if (overallPassed) {
+  if (allPassed) {
+    // Calculate overall speedup for display
+    const totalCn = results.reduce((sum, r) => sum + r.cnTime, 0);
+    const totalClsx = results.reduce((sum, r) => sum + r.clsxTime, 0);
+    const overallRatio = totalCn / totalClsx;
     const speedup = ((1 - overallRatio) * 100).toFixed(0);
-    console.log(`✅ cn is ${speedup}% faster than clsx/lite overall.\n`);
+    console.log(
+      `\n✅ All ${results.length} scenarios passed! cn is ${speedup}% faster than clsx/lite overall.\n`
+    );
     process.exit(0);
   } else {
-    console.log("\n❌ Benchmark failed! cn must be faster than clsx/lite.\n");
+    console.log(
+      `\n❌ Benchmark failed! cn must be faster than clsx/lite in ALL scenarios.`
+    );
+    console.log(
+      `   Failed scenarios: ${failedScenarios.length}/${results.length}`
+    );
+    for (const f of failedScenarios) {
+      console.log(`   - ${f.name}: ${f.ratio.toFixed(2)}x (must be < 1.0)`);
+    }
+    console.log();
     process.exit(1);
   }
 }
