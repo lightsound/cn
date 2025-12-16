@@ -10,7 +10,7 @@ A tiny, **blazing fast** utility for constructing `className` strings conditiona
 ## Features
 
 <<<<<<< HEAD
-- **Blazing Fast**: Up to 33% faster than `clsx/lite`
+- **Blazing Fast**: Up to 36% faster than `clsx/lite`
 =======
 - **Blazing Fast**: Up to 37% faster than `clsx/lite`
 >>>>>>> e2e3f66 (fix: align benchmark table columns in README generation)
@@ -37,12 +37,12 @@ If you only use string-based class composition (the most common pattern with Tai
 
 <!-- BENCHMARK_START -->
 
-| Test Case  | @lightsound/cn | clsx/lite  | Improvement    |
-| ---------- | -------------- | ---------- | -------------- |
-| 2 strings  | 21.77 ns       | 32.58 ns   | **33% faster** |
-| 3 strings  | 54.90 ns       | 63.78 ns   | **14% faster** |
-| 5 strings  | 62.57 ns       | 84.32 ns   | **26% faster** |
-| 10 strings | 106.24 ns      | 139.42 ns  | **24% faster** |
+| Test Case  | @lightsound/cn | clsx/lite | Improvement    |
+| ---------- | -------------- | --------- | -------------- |
+| 2 strings  | 20.89 ns       | 32.44 ns  | **36% faster** |
+| 3 strings  | 56.43 ns       | 65.58 ns  | **14% faster** |
+| 5 strings  | 62.17 ns       | 86.46 ns  | **28% faster** |
+| 10 strings | 104.19 ns      | 138.77 ns | **25% faster** |
 
 <!-- BENCHMARK_END -->
 
