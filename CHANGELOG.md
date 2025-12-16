@@ -1,5 +1,13 @@
 # Changelog
 
+## [1.2.1](https://github.com/lightsound/cn/compare/v1.2.0...v1.2.1) (2025-12-16)
+
+
+### Bug Fixes
+
+* align benchmark table columns in README generation ([5f58b57](https://github.com/lightsound/cn/commit/5f58b571ba7d599f353efd3d956aa8244b4a848e))
+* remove merge conflict markers from README ([c6c8749](https://github.com/lightsound/cn/commit/c6c8749a68fdebafec6b357f6122f5c340d3a3bf))
+
 ## [1.2.0](https://github.com/lightsound/cn/compare/v1.1.0...v1.2.0) (2025-12-16)
 
 
