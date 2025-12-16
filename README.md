@@ -9,7 +9,7 @@ A tiny, **blazing fast** utility for constructing `className` strings conditiona
 
 ## Features
 
-- **Blazing Fast**: Up to 50% faster than `clsx/lite`
+- **Blazing Fast**: Up to 36% faster than `clsx/lite`
 - **Tiny**: ~130B gzipped (smaller than clsx/lite!)
 - **TypeScript**: Full type support out of the box
 - **Simple API**: Strings only - no objects, no arrays, maximum performance
@@ -35,10 +35,10 @@ If you only use string-based class composition (the most common pattern with Tai
 
 | Test Case  | @lightsound/cn | clsx/lite | Improvement    |
 | ---------- | -------------- | --------- | -------------- |
-| 2 strings  | 20.76 ns       | 41.56 ns  | **50% faster** |
-| 3 strings  | 47.25 ns       | 62.71 ns  | **25% faster** |
-| 5 strings  | 62.90 ns       | 83.75 ns  | **25% faster** |
-| 10 strings | 104.68 ns      | 135.50 ns | **23% faster** |
+| 2 strings  | 20.61 ns       | 31.99 ns  | **36% faster** |
+| 3 strings  | 55.25 ns       | 63.49 ns  | **13% faster** |
+| 5 strings  | 63.30 ns       | 87.31 ns  | **28% faster** |
+| 10 strings | 96.66 ns       | 139.70 ns | **31% faster** |
 
 <!-- BENCHMARK_END -->
 
