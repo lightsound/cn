@@ -9,11 +9,7 @@ A tiny, **blazing fast** utility for constructing `className` strings conditiona
 
 ## Features
 
-<<<<<<< HEAD
 - **Blazing Fast**: Up to 36% faster than `clsx/lite`
-=======
-- **Blazing Fast**: Up to 37% faster than `clsx/lite`
->>>>>>> e2e3f66 (fix: align benchmark table columns in README generation)
 - **Tiny**: ~130B gzipped (smaller than clsx/lite!)
 - **TypeScript**: Full type support out of the box
 - **Simple API**: Strings only - no objects, no arrays, maximum performance
