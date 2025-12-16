@@ -10,6 +10,18 @@
     ".": {
       "types": "./dist/index.d.ts",
       "default": "./dist/index.js"
+    },
+    "./tw-merge": {
+      "types": "./dist/tw-merge.d.ts",
+      "default": "./dist/tw-merge.js"
+    }
+  },
+  "peerDependencies": {
+    "tailwind-merge": ">=2.0.0"
+  },
+  "peerDependenciesMeta": {
+    "tailwind-merge": {
+      "optional": true
     }
   },
   "files": [
@@ -18,7 +30,7 @@
   "sideEffects": false,
   "scripts": {
     "build": "bun run build:js && bun run build:types",
-    "build:js": "bun build src/index.ts --outdir dist --minify --target browser",
+    "build:js": "bun build src/index.ts src/tw-merge.ts --outdir dist --minify --target browser",
     "build:types": "tsgo -p tsconfig.build.json",
     "test": "bun test",
     "test:watch": "bun test --watch",
@@ -55,6 +67,7 @@
     "@typescript/native-preview": "^7.0.0-dev.20251213.1",
     "clsx": "*",
     "husky": "^9.1.7",
-    "mitata": "^1.0.34"
+    "mitata": "^1.0.34",
+    "tailwind-merge": "^3.0.0"
   }
 }

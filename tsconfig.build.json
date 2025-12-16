@@ -7,6 +7,6 @@
     "outDir": "./dist",
     "declarationMap": false
   },
-  "include": ["src/index.ts"],
+  "include": ["src/index.ts", "src/tw-merge.ts"],
   "exclude": ["**/*.test.ts", "**/*.spec.ts"]
 }

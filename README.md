@@ -32,12 +32,14 @@ If you only use string-based class composition (the most common pattern with Tai
 > Benchmarks are run on every CI build. See the [latest CI run](https://github.com/lightsound/cn/actions/workflows/ci.yml) for up-to-date results.
 
 <!-- BENCHMARK_START -->
-| Test Case | @lightsound/cn | clsx/lite | Improvement |
-| --------- | -------------- | --------- | ----------- |
-| 2 strings | 36.53 ns | 48.57 ns | **25% faster** |
-| 3 strings | 50.79 ns | 70.63 ns | **28% faster** |
-| 5 strings | 68.34 ns | 90.87 ns | **25% faster** |
-| 10 strings | 105.81 ns | 143.69 ns | **26% faster** |
+
+| Test Case  | @lightsound/cn | clsx/lite | Improvement    |
+| ---------- | -------------- | --------- | -------------- |
+| 2 strings  | 36.53 ns       | 48.57 ns  | **25% faster** |
+| 3 strings  | 50.79 ns       | 70.63 ns  | **28% faster** |
+| 5 strings  | 68.34 ns       | 90.87 ns  | **25% faster** |
+| 10 strings | 105.81 ns      | 143.69 ns | **26% faster** |
+
 <!-- BENCHMARK_END -->
 
 ## Installation
@@ -129,14 +131,44 @@ Note that runtime behavior differs from `clsx/lite` when passing unsupported typ
 
 If you're using JavaScript, ensure your codebase only passes strings and falsy values to `cn()`.
 
+## Using with Tailwind Merge
+
+If you need to merge Tailwind CSS classes (resolving conflicts like `px-2` and `p-3`), use `tc` from `@lightsound/cn/tw-merge`:
+
+```bash
+# Install tailwind-merge as a peer dependency
+bun add tailwind-merge
+```
+
+```typescript
+import { tc } from "@lightsound/cn/tw-merge";
+
+// Conflicting classes are merged intelligently
+tc("px-2 py-1", "p-3");
+// => 'p-3'
+
+tc("text-red-500", "text-blue-500");
+// => 'text-blue-500'
+
+tc("bg-gray-100 text-gray-900", "bg-blue-500 text-white");
+// => 'bg-blue-500 text-white'
+
+// Works with conditional classes too
+tc("text-gray-500", isActive && "text-blue-500");
+// => 'text-blue-500' (if isActive is true)
+```
+
+> **Note**: `tc` requires `tailwind-merge` to be installed separately. If you only need `cn`, you don't need to install `tailwind-merge`.
+
 ## Tailwind CSS IntelliSense
 
-To enable Tailwind CSS IntelliSense for `cn()`, add this to your VS Code settings:
+To enable Tailwind CSS IntelliSense for `cn()` and `tc()`, add this to your VS Code settings:
 
 ```json
 {
   "tailwindCSS.experimental.classRegex": [
-    ["cn\\(([^)]*)\\)", "(?:'|\"|`)([^']*)(?:'|\"|`)"]
+    ["cn\\(([^)]*)\\)", "(?:'|\"|`)([^']*)(?:'|\"|`)"],
+    ["tc\\(([^)]*)\\)", "(?:'|\"|`)([^']*)(?:'|\"|`)"]
   ]
 }
 ```
