@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.2.0](https://github.com/lightsound/cn/compare/v1.1.0...v1.2.0) (2025-12-16)
+
+
+### Features
+
+* add tc function for tailwind-merge integration ([b9ef5ce](https://github.com/lightsound/cn/commit/b9ef5ce6c7aaee81c3b82164f773cf36bde27a91))
+
 ## [1.1.0](https://github.com/lightsound/cn/compare/v1.0.3...v1.1.0) (2025-12-14)
 
 
