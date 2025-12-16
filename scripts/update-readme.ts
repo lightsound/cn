@@ -17,7 +17,8 @@ const CLSX_LITE_FILE = require.resolve("clsx/lite");
 
 const BENCHMARK_ITERATIONS = 100000;
 const WARMUP_ITERATIONS = 10000;
-const BENCHMARK_RUNS = 10; // reduce noise; align with CI benchmark philosophy
+const BENCHMARK_RUNS = 30; // align with CI benchmark philosophy
+const TRIM_PERCENT = 0.1; // Trim top and bottom 10% to remove outliers
 
 type BenchRow = {
   name: string;
@@ -33,6 +34,26 @@ function measure(fn: () => void, iterations: number): number {
   }
   const end = performance.now();
   return end - start;
+}
+
+/**
+ * Calculate median of an array of numbers
+ */
+function median(values: number[]): number {
+  const sorted = [...values].sort((a, b) => a - b);
+  const mid = Math.floor(sorted.length / 2);
+  return sorted.length % 2 !== 0
+    ? sorted[mid]
+    : (sorted[mid - 1] + sorted[mid]) / 2;
+}
+
+/**
+ * Trim outliers from an array (remove top and bottom percentages)
+ */
+function trimOutliers(values: number[], trimPercent: number): number[] {
+  const sorted = [...values].sort((a, b) => a - b);
+  const trimCount = Math.floor(sorted.length * trimPercent);
+  return sorted.slice(trimCount, sorted.length - trimCount);
 }
 
 function getArgValue(flag: string): string | undefined {
@@ -62,11 +83,16 @@ function runBenchmarks(): BenchRow[] {
       clsxTimes.push(measure(() => clsx(...args), BENCHMARK_ITERATIONS));
     }
 
-    const avgCnTime = cnTimes.reduce((s, v) => s + v, 0) / BENCHMARK_RUNS;
-    const avgClsxTime = clsxTimes.reduce((s, v) => s + v, 0) / BENCHMARK_RUNS;
+    // Trim outliers for more stable results
+    const trimmedCnTimes = trimOutliers(cnTimes, TRIM_PERCENT);
+    const trimmedClsxTimes = trimOutliers(clsxTimes, TRIM_PERCENT);
 
-    const cnNs = (avgCnTime / BENCHMARK_ITERATIONS) * 1_000_000;
-    const clsxNs = (avgClsxTime / BENCHMARK_ITERATIONS) * 1_000_000;
+    // Use median for stable results
+    const medianCnTime = median(trimmedCnTimes);
+    const medianClsxTime = median(trimmedClsxTimes);
+
+    const cnNs = (medianCnTime / BENCHMARK_ITERATIONS) * 1_000_000;
+    const clsxNs = (medianClsxTime / BENCHMARK_ITERATIONS) * 1_000_000;
     const improvement = Math.round((1 - cnNs / clsxNs) * 100);
 
     results.push({

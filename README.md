@@ -32,13 +32,26 @@ If you only use string-based class composition (the most common pattern with Tai
 > Benchmarks are run on every CI build. See the [latest CI run](https://github.com/lightsound/cn/actions/workflows/ci.yml) for up-to-date results.
 
 <!-- BENCHMARK_START -->
-| Test Case | @lightsound/cn | clsx/lite | Improvement |
-| --------- | -------------- | --------- | ----------- |
-| 2 strings | 36.08 ns | 47.17 ns | **24% faster** |
-| 3 strings | 51.98 ns | 71.16 ns | **27% faster** |
-| 5 strings | 67.44 ns | 85.96 ns | **22% faster** |
-| 10 strings | 106.64 ns | 146.02 ns | **27% faster** |
+
+| Test Case  | @lightsound/cn | clsx/lite | Improvement    |
+| ---------- | -------------- | --------- | -------------- |
+| 2 strings  | 36.08 ns       | 47.17 ns  | **24% faster** |
+| 3 strings  | 51.98 ns       | 71.16 ns  | **27% faster** |
+| 5 strings  | 67.44 ns       | 85.96 ns  | **22% faster** |
+| 10 strings | 106.64 ns      | 146.02 ns | **27% faster** |
+
 <!-- BENCHMARK_END -->
+
+<details>
+<summary>Benchmark methodology</summary>
+
+- **Runs**: 30 iterations per scenario
+- **Iterations**: 100,000 operations per run
+- **Outlier removal**: Top and bottom 10% trimmed
+- **Metric**: Median (more stable than mean)
+- **Warmup**: 10,000 iterations before measurement
+
+</details>
 
 ## Installation
 
