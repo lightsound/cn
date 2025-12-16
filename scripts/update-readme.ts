@@ -134,24 +134,57 @@ function getBundleSizes(): {
 }
 
 function generateBenchmarkTable(results: BenchRow[]): string {
-  const lines = [
-    "| Test Case | @lightsound/cn | clsx/lite | Improvement |",
-    "| --------- | -------------- | --------- | ----------- |",
-  ];
-
-  for (const r of results) {
+  // Prepare data rows
+  const rows = results.map((r) => {
     const label =
       r.improvement > 0
         ? `**${r.improvement}% faster**`
         : r.improvement < 0
         ? `**${Math.abs(r.improvement)}% slower**`
         : `**0% (tie)**`;
-    lines.push(
-      `| ${r.name} | ${r.cnNs.toFixed(2)} ns | ${r.clsxNs.toFixed(
-        2
-      )} ns | ${label} |`
-    );
-  }
+    return {
+      testCase: r.name,
+      cn: `${r.cnNs.toFixed(2)} ns`,
+      clsx: `${r.clsxNs.toFixed(2)} ns`,
+      improvement: label,
+    };
+  });
+
+  // Calculate column widths (including headers)
+  const headers = {
+    testCase: "Test Case",
+    cn: "@lightsound/cn",
+    clsx: "clsx/lite",
+    improvement: "Improvement",
+  };
+
+  const colWidths = {
+    testCase: Math.max(
+      headers.testCase.length,
+      ...rows.map((r) => r.testCase.length)
+    ),
+    cn: Math.max(headers.cn.length, ...rows.map((r) => r.cn.length)),
+    clsx: Math.max(headers.clsx.length, ...rows.map((r) => r.clsx.length)),
+    improvement: Math.max(
+      headers.improvement.length,
+      ...rows.map((r) => r.improvement.length)
+    ),
+  };
+
+  // Generate aligned table
+  const pad = (s: string, len: number) => s.padEnd(len);
+  const sep = (len: number) => "-".repeat(len);
+
+  const lines = [
+    "",
+    `| ${pad(headers.testCase, colWidths.testCase)} | ${pad(headers.cn, colWidths.cn)} | ${pad(headers.clsx, colWidths.clsx)} | ${pad(headers.improvement, colWidths.improvement)} |`,
+    `| ${sep(colWidths.testCase)} | ${sep(colWidths.cn)} | ${sep(colWidths.clsx)} | ${sep(colWidths.improvement)} |`,
+    ...rows.map(
+      (r) =>
+        `| ${pad(r.testCase, colWidths.testCase)} | ${pad(r.cn, colWidths.cn)} | ${pad(r.clsx, colWidths.clsx)} | ${pad(r.improvement, colWidths.improvement)} |`
+    ),
+    "",
+  ];
 
   return lines.join("\n");
 }
