@@ -27,6 +27,8 @@ A tiny, **blazing fast** utility for constructing `className` strings conditiona
 
 If you only use string-based class composition (the most common pattern with Tailwind CSS), `@lightsound/cn` provides the best performance.
 
+> **Note on package size**: The npm install size of `@lightsound/cn` is larger than `clsx` because the package also includes the optional `tw-merge` entry point (with bundled `tailwind-merge`). However, the **actual bundle size added to your app** depends on what you import. If you only use `import { cn } from "@lightsound/cn"`, tree-shaking ensures that only ~130B (gzip) is included in your final bundle.
+
 ## Benchmarks
 
 > Benchmarks are run on every CI build. See the [latest CI run](https://github.com/lightsound/cn/actions/workflows/ci.yml) for up-to-date results.
