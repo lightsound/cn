@@ -63,11 +63,11 @@
   "devDependencies": {
     "@commitlint/cli": "^20.4.1",
     "@commitlint/config-conventional": "^20.4.1",
-    "@types/bun": "^1.3.8",
-    "@typescript/native-preview": "^7.0.0-dev.20260208.1",
+    "@types/bun": "^1.3.9",
+    "@typescript/native-preview": "^7.0.0-dev.20260218.1",
     "clsx": "^2.1.1",
     "husky": "^9.1.7",
     "mitata": "^1.0.34",
-    "tailwind-merge": "^3.4.0"
+    "tailwind-merge": "^3.5.0"
   }
 }
