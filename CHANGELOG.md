@@ -1,5 +1,16 @@
 # Changelog
 
+## [2.0.0](https://github.com/lightsound/cn/compare/v1.2.1...v2.0.0) (2026-02-19)
+
+
+### ⚠ BREAKING CHANGES
+
+* rename tc to cn in tw-merge entry point
+
+### Features
+
+* rename tc to cn in tw-merge entry point ([76c3908](https://github.com/lightsound/cn/commit/76c39085742b5a974877a4ad999b8f3efbaed6a5))
+
 ## [1.2.1](https://github.com/lightsound/cn/compare/v1.2.0...v1.2.1) (2025-12-16)
 
 
