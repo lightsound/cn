@@ -1,8 +1,8 @@
 import { twMerge } from "tailwind-merge";
-import { cn } from "./index";
+import { cn as baseCn } from "./index";
 
-export function tc(
-  ...inputs: Parameters<typeof cn>
+export function cn(
+  ...inputs: Parameters<typeof baseCn>
 ): ReturnType<typeof twMerge> {
-  return twMerge(cn(...inputs));
+  return twMerge(baseCn(...inputs));
 }

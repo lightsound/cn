@@ -146,7 +146,7 @@ If you're using JavaScript, ensure your codebase only passes strings and falsy v
 
 ## Using with Tailwind Merge
 
-If you need to merge Tailwind CSS classes (resolving conflicts like `px-2` and `p-3`), use `tc` from `@lightsound/cn/tw-merge`:
+If you need to merge Tailwind CSS classes (resolving conflicts like `px-2` and `p-3`), use `cn` from `@lightsound/cn/tw-merge`:
 
 ```bash
 # Install tailwind-merge as a peer dependency
@@ -154,34 +154,33 @@ bun add tailwind-merge
 ```
 
 ```typescript
-import { tc } from "@lightsound/cn/tw-merge";
+import { cn } from "@lightsound/cn/tw-merge";
 
 // Conflicting classes are merged intelligently
-tc("px-2 py-1", "p-3");
+cn("px-2 py-1", "p-3");
 // => 'p-3'
 
-tc("text-red-500", "text-blue-500");
+cn("text-red-500", "text-blue-500");
 // => 'text-blue-500'
 
-tc("bg-gray-100 text-gray-900", "bg-blue-500 text-white");
+cn("bg-gray-100 text-gray-900", "bg-blue-500 text-white");
 // => 'bg-blue-500 text-white'
 
 // Works with conditional classes too
-tc("text-gray-500", isActive && "text-blue-500");
+cn("text-gray-500", isActive && "text-blue-500");
 // => 'text-blue-500' (if isActive is true)
 ```
 
-> **Note**: `tc` requires `tailwind-merge` to be installed separately. If you only need `cn`, you don't need to install `tailwind-merge`.
+> **Note**: The `cn` from `@lightsound/cn/tw-merge` requires `tailwind-merge` to be installed separately. If you don't need Tailwind class merging, use `cn` from `@lightsound/cn` instead.
 
 ## Tailwind CSS IntelliSense
 
-To enable Tailwind CSS IntelliSense for `cn()` and `tc()`, add this to your VS Code settings:
+To enable Tailwind CSS IntelliSense for `cn()`, add this to your VS Code settings:
 
 ```json
 {
   "tailwindCSS.experimental.classRegex": [
-    ["cn\\(([^)]*)\\)", "(?:'|\"|`)([^']*)(?:'|\"|`)"],
-    ["tc\\(([^)]*)\\)", "(?:'|\"|`)([^']*)(?:'|\"|`)"]
+    ["cn\\(([^)]*)\\)", "(?:'|\"|`)([^']*)(?:'|\"|`)"]
   ]
 }
 ```
