@@ -1,5 +1,12 @@
 # Changelog
 
+## [2.0.1](https://github.com/lightsound/cn/compare/v2.0.0...v2.0.1) (2026-02-19)
+
+
+### Bug Fixes
+
+* add rootDir to tsconfig.build.json to fix type declaration output path ([41a9a92](https://github.com/lightsound/cn/commit/41a9a92feb40723c5b3d10f8a7c34289a1e5e439))
+
 ## [2.0.0](https://github.com/lightsound/cn/compare/v1.2.1...v2.0.0) (2026-02-19)
 
 
