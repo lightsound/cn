@@ -1,5 +1,12 @@
 # Changelog
 
+## [2.0.2](https://github.com/lightsound/cn/compare/v2.0.1...v2.0.2) (2026-04-05)
+
+
+### Miscellaneous Chores
+
+* release 2.0.2 ([80fa468](https://github.com/lightsound/cn/commit/80fa4686f33bec13f4b9237ca32872cc03949cec))
+
 ## [2.0.1](https://github.com/lightsound/cn/compare/v2.0.0...v2.0.1) (2026-02-19)
 
 
